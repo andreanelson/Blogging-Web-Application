@@ -1,0 +1,198 @@
+<!-- Author Home page -->
+<!doctype html>
+<html>
+    <head>
+        <title>Author Home webpage</title>
+    </head>
+    <body>
+        <h1> Welcome to the Author Home Page </h1>
+        <!-- Adding Bootstrap CSS link -->
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+       <!-- adding CSS styling -->
+       <style>
+        body {
+            padding: 22px;
+        }
+        h1,h3 {
+            margin-top: 15px;
+        }
+        table {
+            margin-top: 15px;
+        }
+        th,td {
+            border-bottom: 4px solid #ccc6c6;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #e9e5e5;
+        }
+        td button {
+            padding: 5px 10px;
+            background-color: #4495ec;
+            color: #f8f3f3;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        td button:hover {
+            background-color: #3b70a9;
+        }
+        .back-link {
+            display: inline-block;
+        }
+    </style>
+        <a href="/user/author/settings/<%= availableArticleInfo[0].author_id %>">Settings</a><br>
+        <form method="get" action="/user/author/create_draft/<%= availableArticleInfo[0].author_id %>">
+          <input type="submit" value="Create new draft" />
+        </form>
+        <!-- headers for title,subtitle and author name -->
+        <h1><%= availableArticleInfo[0].blogTitle %></h1>
+        <h1><%= availableArticleInfo[0].blogSubtitle %></h1>
+        <h1><%= availableArticleInfo[0].authorName %></h1>
+
+        <h3>You can see names and list of all your articles</h3>
+        <!-- creating table for draft articles -->
+        <h3>Draft Articles</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Article ID</th>
+                    <th>Article Title</th>
+                    <th>Article subtitle</th>
+                    <th>Date created</th>
+                    <th>Date modified</th>
+                    <th>Likes</th>
+                </tr>
+            </thead>
+            <% availableArticleInfo.forEach(function(parameter1){ %>
+              <!-- checking if article is draft or published -->
+              <% if (parameter1.is_published === 0) { %>
+            <tbody>
+                    <tr>
+                        <td><%=parameter1.article_id%></td>
+                        <td><%=parameter1.title%></td>
+                        <td><%=parameter1.subtitle%></td>
+                        <td><%=parameter1.created%></td>
+                        <td><%=parameter1.modified%></td>
+                        <td><%=parameter1.likes%></td>
+                        <td>
+                          <!-- creating delete publish and edit buttons -->
+                          <form action="delete/<%= parameter1.article_id %>" method="post">
+                            <button type="submit">Delete</button>
+                          </form>
+                          </td>
+                        <td><form action="published/<%= parameter1.article_id %>" method="post">
+                          <button type="submit">Publish</button>
+                        </form></td>
+                        <td> <a href="edit/<%= parameter1.article_id %>">
+                          <button>Edit</button>
+                        </a>
+                      </td>
+                    </tr>
+                </tr>
+            </tbody>
+            <% }}) %>
+          </table>
+          <!-- creating published articles table -->
+        <h3>Published Articles</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Article ID</th>
+                    <th>Article Title</th>
+                    <th>Article subtitle</th>
+                    <th>Date created</th>
+                    <th>Date modified</th>
+                    <th>Date Published</th>
+                    <th>Likes</th>
+                </tr>
+            </thead>
+            <% availableArticleInfo.forEach(function(parameter1){ %>
+              <!-- checking if article is draft or published -->
+              <% if (parameter1.is_published === 1) { %>
+            <tbody>
+
+                    <tr>
+                        <td><%=parameter1.article_id%></td>
+                        <td><a href="/user/reader/article/<%= parameter1.article_id %>"><%=parameter1.title%></a></td>
+                        <td><%=parameter1.subtitle%></td>
+                        <td><%=parameter1.created%></td>
+                        <td><%=parameter1.modified%></td>
+                        <td><%=parameter1.published_date%></td>
+                        <td><%=parameter1.likes%></td>
+                        <td>
+                          <!-- creating delete button -->
+                          <form action="delete/<%= parameter1.article_id %>" method="post">
+                            <button type="submit">Delete</button>
+                          </form>
+                          </td>
+                          <td>
+                            <button onclick="window.location.href = '/user/reader/article/<%= parameter1.articleId %>'" type="submit">Share</button>
+                          </td>
+
+                    </tr>
+
+                </tr>
+            </tbody>
+            <% }}) %>
+          </table>
+
+    <!-- Adding jQuery and Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+
+<script>
+//delete article button click
+function shareArticle(articleId) {
+    if (confirm('Are you sure you want to share this article?')) {
+      console.log('no error so far');
+      // Send a DELETE request to delete the article
+      fetch('/author/delete/'+articleId, {
+        method: 'POST'
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Reloading the page 
+            window.location.reload();
+          } else {
+            console.error('Error deleting article:', response.statusText);
+          }
+        })
+        .catch((error) => {
+          console.error('Error deleting article:', error);
+        });
+    }
+  }
+
+    function createDraft() {
+    // Sending POST request to create new draft article
+    fetch('/author/create-draft', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'New Draft Article', 
+        subtitle:'New draft subtitle', 
+        text: 'Start writing your article here', 
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Redirecting author to the edit page for new created draft article
+        window.location.href = `localhost:3000/user/reader/article/${data.articleId }`;
+      })
+      .catch((error) => {
+        console.error('Error creating draft:', error);
+      });
+
+    }
+
+</script>
+
+

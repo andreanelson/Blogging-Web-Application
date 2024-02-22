@@ -1,0 +1,29 @@
+<!-- create draft article page -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Article</title>
+</head>
+<body>
+    <!-- align to centre of page -->
+    <center>
+    <h1>Create a New Article</h1>
+    <!-- creating input boxes for title, subtitle and text boxes -->
+    <form action="/user/author/create_draft/<%= results.id%>" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br>
+        <br>
+        <label for="subtitle">Subtitle:</label>
+        <input type="text" id="subtitle" name="subtitle"><br>
+        <br>
+
+        <label for="article_text">Article Text:</label><br>
+        <textarea id="article_text" name="article_text" rows="10" cols="50" required></textarea><br>
+
+        <button type="submit">Save Article</button>
+    </form>
+</center>
+<center><a href="/user/author/home_page">Back</a></center>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!-- Author edit article page -->
+<!doctype html>
+<html>
+ <head>
+    <title>This is the author edit article page</title>
+    <!-- Adding Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- adding CSS styling -->
+    <style>
+        body {
+            padding: 10px;
+        }
+        h1,h3 {
+            margin-top: 10px;
+        }
+        input[type="text"],
+        textarea {
+            padding: 7px;
+            width: 80%;
+            border: 1px solid #dbd6d6;
+            border-radius: 3px;
+        }
+        form {
+            margin-top: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        button[type="submit"] {
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: #2285ef;
+            color: #f7eded;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .back-link {
+            display: inline-block;
+        }
+    </style>
+ </head>
+
+ <body>
+    <h1> Edit article page </h1>
+    <% editArticle.forEach(function(parameter1){ %>
+    <!-- showing article details -->
+    <p>Created: <%= parameter1.created %>, Last Modified: <%= parameter1.modified %></p>
+    <!-- creating form for author to edit article details  -->
+    <form action="/user/author/edit/<%= parameter1.article_id %>" method="POST"> 
+    <!-- creating input box for article title -->
+    <label for="articleTitle">Article Title:</label> 
+    <input type="text" id="articleTitle" name="articleTitle" value="<%= parameter1.title %>" required><br>
+    <!-- creating input box for article subtitle -->
+    <label for="articleSubtitle">Subtitle:</label>
+    <input type="text" id="articleSubtitle" name="articleSubtitle" value="<%= parameter1.subtitle %>" required><br>
+    <!-- creating input box for article text -->
+    <label for="articleText">Article Text:</label>
+    <textarea id="articleText" name="articleText" required><%= parameter1.article_text %></textarea><br>
+    <!-- creating submit button -->
+    <button type="submit">Submit Changes</button>
+    </form>
+    <% }) %> 
+    <a href="/user/author/home_page">Back</a>
+    
+    <!-- Adding jQuery and Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ </body>
+</html>

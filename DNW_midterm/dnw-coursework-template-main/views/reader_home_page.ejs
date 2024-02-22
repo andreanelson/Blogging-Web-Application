@@ -1,0 +1,86 @@
+<!-- Reader Home Page -->
+<!doctype html>
+<html>
+ <head>
+    <title>This is the Reader home page</title>
+    <!-- Adding the Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- adding CSS styling -->
+    <style>
+        body {
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #4d8fd6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #4281c4;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th {
+            font-weight: bold;
+        }
+        th,td {
+            padding: 10px;
+            border-bottom: 1px solid #b8b5b5;
+        }
+
+    </style>
+ </head>
+
+ <body>
+    <!-- headings for the title,subtitle and authorname -->
+    <h1> Welcome to the Reader's Home Page </h1>
+    <h2><%= availableArticles[0].blogTitle %></h2>
+    <h3><%= availableArticles[0].blogSubtitle %></h3>
+    <h4><strong><%= availableArticles[0].authorName %></strong></h4>
+    <p>Below is a list of articles published by <%= availableArticles[0].authorName %></p>
+    <!-- table of published articles -->
+    <table class="table">
+        <thead>
+            <tr>
+                <!-- table headers -->
+                <th>Article ID</th>
+                <th>Article Title</th>
+                <th>Article subtitle</th>
+                <th>Date created</th>
+                <th>Date modified</th>
+                <th>Likes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% availableArticles.forEach(function(parameter1){ %>
+            <% if (parameter1.is_published === 1) { %>
+                <tr>
+                    <!-- getting the data for the table -->
+                    <td><%=parameter1.id%></td>
+                    <td><a href="/user/reader/article/<%= parameter1.article_id %>"><%=parameter1.title%></a></td>
+                    <td><%=parameter1.subtitle%></td>
+                    <td><%=parameter1.created%></td>
+                    <td><%=parameter1.modified%></td>
+                    <td><%=parameter1.likes%></td>
+                </tr>
+                <% }}) %>
+            </tr>
+        </tbody>
+    </table> 
+
+    <!-- Adding jQuery and Bootstrap JS scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
+
